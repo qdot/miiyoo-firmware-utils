@@ -43,19 +43,41 @@ export class LaunchBluetooth {
     this.dataChar = (await discoverCharsAsync([this.charUUIDs.data]))[0];
   }
 
-  public async readCmd() {
-    return await util.promisify(this.cmdChar.read.bind(this.cmdChar));
+  public async readCmd(): Promise<Buffer> {
+    return await util.promisify(this.cmdChar.read.bind(this.cmdChar))();
   }
 
   public async writeCmd(aData: Buffer) {
-    return await util.promisify(this.cmdChar.write.bind(this.cmdChar));
+    return await util.promisify(this.cmdChar.write.bind(this.cmdChar))(aData, false);
   }
 
-  public async readData() {
-    return await util.promisify(this.dataChar.read.bind(this.dataChar));
+  public async readData(): Promise<Buffer> {
+    return await util.promisify(this.dataChar.read.bind(this.dataChar))();
   }
 
   public async writeData(aData: Buffer) {
-    return await util.promisify(this.dataChar.write.bind(this.dataChar));
+    return await util.promisify(this.dataChar.write.bind(this.dataChar))(aData, false);
+  }
+
+  public async CommandWithResponse(aCommand: number, aData: number = 0x00) {
+    const cmd = Buffer.from([aCommand]);
+    await this.writeCmd(cmd);
+    await this.writeData(Buffer.from([aData]));
+    const cmdRet = await this.readCmd();
+    const dataRet = await this.readData();
+    console.log(dataRet);
+  }
+
+  public async GetVersion() {
+    return await this.CommandWithResponse(0x05);
+  }
+
+  public async GetExecutionMode() {
+    return await this.CommandWithResponse(0x03);
+  }
+
+  public async Initialize() {
+    await this.readCmd();
+    await this.writeCmd(Buffer.from([0]));
   }
 }
