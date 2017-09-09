@@ -1,0 +1,77 @@
+{
+  "name": "miiyoo-firmware-utils",
+  "version": "0.0.1",
+  "description": "Javascript/Typescript utility library for loading and modifying firmware on Kiiroo toys (Fleshlight Launch, Pearl 2, etc...)",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "scripts": {
+    "build": "trash dist dist-bundle && yarn build:main",
+    "build:main": "tsc -p tsconfig.json",
+    "exe": "yarn build:main && node dist/index.js",
+    "tslint": "tslint -c tslint.json \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "tslint:fix": "tslint -c tslint.json --fix semicolon,comma,no-var-keyword,ordered-imports \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "pretest": "yarn build:main",
+    "test": "nyc mocha \"tests/**/*.ts\"",
+    "posttest": "nyc report && codecov -f coverage/*.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/metafetish/raunch-firmware-loader.git"
+  },
+  "keywords": [
+    "teledildonics",
+    "hardware"
+  ],
+  "author": "The Metafetish Project",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/metafetish/miiyoo-firmware-utils/issues"
+  },
+  "homepage": "https://github.com/metafetish/miiyoo-firmware-utils#readme",
+  "dependencies": {
+    "command-line-args": "^4.0.7",
+    "noble": "^1.8.1"
+  },
+  "devDependencies": {
+    "@types/chai": "^3.5.2",
+    "@types/command-line-args": "^4.0.1",
+    "@types/mocha": "^2.2.41",
+    "@types/noble": "^0.0.33",
+    "@types/node": "^8.0.28",
+    "@types/text-encoding": "^0.0.31",
+    "@types/web-bluetooth": "^0.0.2",
+    "chai": "^3.5.0",
+    "codecov": "^2.2.0",
+    "copyfiles": "^1.2.0",
+    "mocha": "^3.4.1",
+    "mock-socket": "^6.1.0",
+    "nyc": "^10.3.2",
+    "trash-cli": "^1.4.0",
+    "ts-node": "^3.2.0",
+    "tslint": "^5.5.0",
+    "typescript": "^2.5.0",
+    "yarn": "^1.0.1"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "text",
+      "json",
+      "html"
+    ],
+    "sourceMap": true,
+    "instrument": true,
+    "all": true
+  }
+}
