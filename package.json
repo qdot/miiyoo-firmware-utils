@@ -45,6 +45,7 @@
     "copyfiles": "^1.2.0",
     "mocha": "^3.4.1",
     "mock-socket": "^6.1.0",
+    "nrf-intel-hex": "^0.2.0",
     "nyc": "^10.3.2",
     "trash-cli": "^1.4.0",
     "ts-node": "^3.2.0",
